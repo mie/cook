@@ -1,0 +1,81 @@
+-if current_user
+  script src==url('newrecipe.js'); type="text/javascript"
+  javascript:
+    jQuery(function(){
+      var nr = new NewRecipe('#ings');
+      nr.checkElements();
+
+      $('#new_recipe').click(function(){
+        cook.create(
+          {
+            name: 'recipe',
+            data: {
+              title: $('#inputTitle').val(),
+              intro: $('#inputIntro').val(),
+              minutes: $('#inputTime').val(),
+              servings: $('#inputServings').val(),
+              ingredients: nr.getIngredients(),
+              description: $('#inputSteps').val(),
+              tags: $('#inputTags').val().split(', ')
+            }
+          },
+          function(data, textStatus, jqXHR){
+            console.log('s');
+          },
+          function(jqXHR, textStatus, errorThrown){
+            console.log('e');
+          }
+        );
+      });
+    });
+  .row
+    .span4
+      .form-horizontal
+        .control-group
+          label.control-label for="inputText" Title
+          .controls
+            input#inputTitle type="text" placeholder="Banana soup"
+        .control-group
+          label.control-label for="inputText" Intro
+          .controls
+            input#inputIntro type="text" placeholder="My first experience! Om-nom-nom!"
+        .control-group
+          label.control-label Cooking time
+          .controls
+            input.span1#inputTime type="text" placeholder="30"
+            span.help-inline minutes
+        .control-group
+          label.control-label Servings
+          .controls
+            input.span1#inputServings type="text" placeholder="2"
+            span.help-inline persons
+        .control-group
+          label.control-label Tags
+          .controls
+            input#inputTags type="text" placeholder="Apples, Carrots"            
+        .control-group
+          label.control-label Ingredients
+          .controls#ings
+            /input.typeahead type="text" placeholder="Apples, Carrots"
+        .control-group
+          label.control-label Steps
+          .controls
+            textarea#inputSteps
+        .control-group
+          label.control-label
+          .controls
+            button.btn#new_recipe type="button" Sign up
+    .span6
+      #result
+        h3.muted#title Magnificient title
+        h5.muted#intro Catchy intro
+        hr
+        ul
+          li
+            h5#time 25 minutes
+          li
+            h5#servings 2 persons
+        hr
+        #ingredients
+        hr
+        #steps

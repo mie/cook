@@ -1,0 +1,12 @@
+source "http://rubygems.org"
+
+gem "mongoid"
+gem "mongoid-pagination"
+gem "sinatra"
+gem "redcarpet"
+gem "json"
+gem "slim"
+gem "sinatra-cross_origin"
+gem "shotgun"
+gem "thin"
+gem "bcrypt-ruby", :require => "bcrypt"

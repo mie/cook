@@ -1,0 +1,51 @@
+- if recipe && author
+  javascript:
+    jQuery(function(){
+      $('#like').click(function(){
+        cook.update({
+          name: 'recipe',
+          id: $('#rc').attr('class').substr(5),
+          data: {
+            likes: 1
+          }
+        }, function(){console.log('s')}, function(){console.log('e')});
+      });
+      $('#dislike').click(function(){
+        cook.update({
+          name: 'recipe',
+          id: $('#rc').attr('class').substr(5),
+          data: {
+            likes: 0
+          }
+        }, function(){console.log('s')}, function(){console.log('e')});
+      });
+      $('#delete').click(function(){
+        cook.delete({
+          name: 'recipe',
+          id: $('#rc').attr('class').substr(5),
+          data: {
+            
+          }
+        }, function(){console.log('s')}, function(){console.log('e')});
+      });
+    });
+
+  .row#rc class="r#{recipe._id.to_s}"
+    .span8.offset2
+      -if current_user
+        .row
+          .span2
+            input.btn.btn-success#like type='button' value='Like it!'
+          -if current_user != author
+            .span2
+              input.btn.btn-warning#dislike type='button' value='Disike it!'
+          .span2
+            input.btn.btn-danger#delete type='button' value='Delete it!'
+      h3 =recipe.title
+      h5.muted: a href==url("/user/#{author._id.to_s}") by #{author.realname}
+      hr
+      .row
+        .span4
+          h4.muted time: #{recipe.minutes} minutes
+        .span4
+          h4.muted servings: for #{recipe.servings} persons

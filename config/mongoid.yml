@@ -1,0 +1,14 @@
+development:
+  sessions:
+    default:
+      database: cook
+      hosts:
+        - localhost:27017
+production:
+  sessions:
+    default:
+      database: cooky
+      user: chief
+      password: ddeHhNrk5W3JMsYb5NrU
+      hosts:
+        - dharma.mongohq.com:10032

@@ -1,0 +1,72 @@
+#content
+javascript:
+  function get_data(page, sf){
+    $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      url: '/api/recipes',
+      data: {'page_number': page},
+      dataType: "json",
+      success: function(response, textStatus, jqXHR){
+        console.log(window.location.host);
+        var data = response.recipes;
+        for(var i = 0; i < data.length; i++){
+          $('#content').append(
+            $('<div>', {class: 'row'}).append(
+              $('<div>', {class: 'span2'}).append(
+                $('<img>', {src: data[i].user.avatar, class: 'img-circle'})
+              )
+            ).append(
+              $('<div>', {class: 'span8'}).append(
+                $('<h3>').append($('<a>', {href: 'http://' + window.location.host + '/recipe/' + data[i]['id']}).text(data[i].title + '  ( ' + data[i].likes + ' likes )'))
+              ).append(
+                $('<h5>', {class: 'muted'}).text(data[i].intro)
+              ).append(
+                $('<ul>').append(
+                  $('<li>').text(data[i].servings + ' servings')
+                ).append(
+                  $('<li>').text(data[i].minutes + ' minutes')
+                )
+              ).append(
+                $('<code>').text(data[i].tags.map(function(tag) {return tag.tag_name;}).join(', '))
+              )
+            )
+          );
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        $('#content').append(
+          $('<div>', {class: 'alert alert-info'}).append(
+            $('<p>').text('no more entries')
+          )
+        );
+      }
+    });
+  }
+
+  (jQuery)(function(){
+
+    var loading = true;
+    var page = 1;
+    get_data();
+    $('#content').scroll(function(){
+      var cur_scroll = $(this)[0].scrollTop;
+      var max_scroll = $(this)[0].scrollHeight - $(this).height();
+
+      if((cur_scroll >= max_scroll - 400) && loading == false){
+        loading = true;
+        $('#content').append('<div class="alert alert-error"><h4>Loading</h4></div>');
+        $(this)[0].scrollTop = $(this)[0].scrollHeight - $(this).height();
+        page = page + 1;
+        get_data(page);
+      }
+
+    });
+
+    function show_data(json){
+      loading = false;
+      $('#content .alert').remove();
+    }
+
+
+  });
